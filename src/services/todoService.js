@@ -5,7 +5,6 @@ export const getAllTodos = async() => {
   try {
     const res = await fetch(BASE_URL)
     const data = await res.json()
-    console.log('INDEX -->', data)
     return data
   } catch(err) {
     throw err
@@ -14,16 +13,21 @@ export const getAllTodos = async() => {
 
 export const createTodo = async(todo) => {
   try { 
+
+    let todoData = {
+      title: todo,
+      completed: false
+    }
+
     const res = await fetch(BASE_URL, {
       method: 'POST',
       headers:{
         'content-type': 'application/json',
         'Authorization': `Bearer ${tokenService.getToken()}`
       },
-      body: JSON.stringify(todo)
+      body: JSON.stringify(todoData)
     })
     const data = await res.json()
-    console.log('CREATE TODO --> ',data)
     return data
   } catch(err) {
     throw err
@@ -35,6 +39,16 @@ export const deleteTodo = async(todoId) => {
     await fetch(`${BASE_URL}${todoId}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${tokenService.getToken()}` }
+    })
+  } catch(err) {
+    throw err
+  }
+}
+
+export const doTodo = async(todoId) => {
+  try {
+    await fetch(`${BASE_URL}${todoId}/done`, {
+      method: 'PATCH',
     })
   } catch(err) {
     throw err

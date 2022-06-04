@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import NewTodo from '../../components/NewTodo/NewTodo'
 import Todo from '../../components/Todo/Todo'
-import { getAllTodos, createTodo, deleteTodo } from '../../services/todoService'
+import { getAllTodos, createTodo, deleteTodo, doTodo } from '../../services/todoService'
 
 const Landing = ({ user }) => {
   const [todos, setTodos] = useState([{}])
@@ -21,6 +21,8 @@ const Landing = ({ user }) => {
     try {
       await createTodo(title)
       const todoData = await getAllTodos()
+      setTodos(todoData)
+      setTitle('')
     } catch(err) {
       throw err
     }
@@ -29,6 +31,16 @@ const Landing = ({ user }) => {
   const handleDeleteTodo = async(todoId) => {
     try {
       await deleteTodo(todoId)
+      const todoData = await getAllTodos()
+      setTodos(todoData)
+    } catch(err) {
+      throw err
+    }
+  }
+
+  const handleDoTodo = async(todoId) => {
+    try {
+      await doTodo(todoId)
       const todoData = await getAllTodos()
       setTodos(todoData)
     } catch(err) {
@@ -52,6 +64,7 @@ const Landing = ({ user }) => {
             <Todo 
               todo={todo} 
               handleDeleteTodo={handleDeleteTodo} 
+              doTodo={handleDoTodo}
             />
           </div>
         ))

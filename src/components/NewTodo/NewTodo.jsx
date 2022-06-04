@@ -17,9 +17,7 @@ const NewTodo = (props) => {
           />
         </div>
 
-        <button 
-          className='bg-green-500 hover:bg-green-600 rounded ml-5 p-1'
-        >
+        <button className='bg-green-500 hover:bg-green-600 rounded ml-5 p-1'>
           Add Todo
         </button>
 
