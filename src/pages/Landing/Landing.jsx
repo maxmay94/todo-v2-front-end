@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 
 import NewTodo from '../../components/NewTodo/NewTodo'
 import Todo from '../../components/Todo/Todo'
-import { getAllTodos, createTodo, deleteTodo, doTodo } from '../../services/todoService'
+import { getAllTodos, createTodo, deleteTodo, doTodo, editTodo } from '../../services/todoService'
 
 const Landing = ({ user }) => {
   const [todos, setTodos] = useState([{}])
+  const [oneTodo, setOneTodo] = useState({})
   const [title, setTitle] = useState('')
+  const [editTitle, setEditTitle] = useState('')
 
   useEffect(() => {
     const fetchAllTodos = async() => {
@@ -48,6 +50,18 @@ const Landing = ({ user }) => {
     }
   }
 
+  const handleEditTodo = async(e) => {
+    e.preventDefault()
+    try {
+      await editTodo(editTitle, oneTodo)
+      const todoData = await getAllTodos()
+      setTodos(todoData)
+      setTitle('')
+      setOneTodo({})
+    } catch(err) {
+      throw err
+    }
+  }
 
   return (
     <div>
@@ -63,8 +77,12 @@ const Landing = ({ user }) => {
           <div key={i}>
             <Todo 
               todo={todo} 
-              handleDeleteTodo={handleDeleteTodo} 
+              deleteTodo={handleDeleteTodo} 
               doTodo={handleDoTodo}
+              editTodo={handleEditTodo}
+              editTitle={editTitle}
+              setEditTitle={setEditTitle} 
+              setOneTodo={setOneTodo}
             />
           </div>
         ))

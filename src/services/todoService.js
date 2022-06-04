@@ -54,3 +54,27 @@ export const doTodo = async(todoId) => {
     throw err
   }
 }
+
+export const editTodo = async(title, todo) => {
+
+  console.log('title --> ', title)
+  console.log('todo --> ', todo)
+
+  let todoData = {
+    title: title,
+    completed: todo.completed
+  }
+  
+  try {
+    const res = await fetch(`${BASE_URL}${todo._id}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${tokenService.getToken()}` },
+      body: JSON.stringify(todoData)
+    })
+    const data = await res.json()
+    console.log('data:::',data)
+    return data
+  } catch(err) {
+    throw err
+  }
+}
